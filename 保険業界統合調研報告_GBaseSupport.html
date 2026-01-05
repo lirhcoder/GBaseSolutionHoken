@@ -319,6 +319,7 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab active" data-tab="companies">企業一覧・検索</div>
+            <div class="tab" data-tab="complaints">苦情分析</div>
             <div class="tab" data-tab="painpoints">業界ペインポイント</div>
             <div class="tab" data-tab="solutions">GBase機能マッチング</div>
             <div class="tab" data-tab="summary">総合サマリー</div>
@@ -374,6 +375,279 @@
 
             <div class="company-grid" id="company-grid">
                 <!-- Companies will be injected here -->
+            </div>
+        </div>
+
+        <!-- Tab: Complaints Analysis -->
+        <div class="tab-content" id="tab-complaints">
+            <div class="section">
+                <h2>保険業界苦情統計分析</h2>
+                <p style="color:var(--muted);margin-bottom:1.5rem;">各社の苦情データを分析し、GBase Supportによる課題解決ポイントを提示します。</p>
+
+                <h3>生命保険会社 苦情件数ランキング</h3>
+                <div class="summary-table-wrapper">
+                    <table class="data-table summary-table">
+                        <thead>
+                            <tr>
+                                <th>順位</th>
+                                <th>会社名</th>
+                                <th>苦情件数</th>
+                                <th>主要カテゴリ</th>
+                                <th>前年比</th>
+                                <th>GBase訴求ポイント</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>アフラック生命</td>
+                                <td style="font-weight:bold;color:var(--danger);">52,817件</td>
+                                <td>保険金・給付金 42%</td>
+                                <td style="color:var(--success);">▼8%</td>
+                                <td>給付金請求プロセスのFAQ自動化</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>住友生命</td>
+                                <td style="font-weight:bold;color:var(--danger);">52,184件</td>
+                                <td>新契約関係 38%</td>
+                                <td style="color:var(--danger);">▲5%</td>
+                                <td>契約説明の多言語・24時間対応</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>日本生命</td>
+                                <td style="font-weight:bold;color:var(--warning);">45,925件</td>
+                                <td>保全関係 35%</td>
+                                <td style="color:var(--success);">▼3%</td>
+                                <td>契約変更手続きの自動ガイド</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>メットライフ生命</td>
+                                <td style="font-weight:bold;color:var(--warning);">43,717件</td>
+                                <td>新契約関係 45%</td>
+                                <td style="color:var(--success);">▼12%</td>
+                                <td>契約内容説明の多言語Bot</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>第一生命</td>
+                                <td style="font-weight:bold;">38,420件</td>
+                                <td>保険金関係 30%</td>
+                                <td style="color:var(--success);">▼7%</td>
+                                <td>支払い状況照会システム連携</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>明治安田生命</td>
+                                <td style="font-weight:bold;">35,812件</td>
+                                <td>保全関係 40%</td>
+                                <td style="color:var(--danger);">▲2%</td>
+                                <td>各種手続きナビゲーション</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>かんぽ生命</td>
+                                <td style="font-weight:bold;">28,546件</td>
+                                <td>新契約関係 55%</td>
+                                <td style="color:var(--success);">▼15%</td>
+                                <td>高齢者向け音声対話システム</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>ソニー生命</td>
+                                <td style="font-weight:bold;">12,845件</td>
+                                <td>保険金関係 28%</td>
+                                <td style="color:var(--muted);">±0%</td>
+                                <td>FP支援ナレッジBot</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="margin-top:2rem;">損害保険会社 苦情件数ランキング</h3>
+                <div class="summary-table-wrapper">
+                    <table class="data-table summary-table">
+                        <thead>
+                            <tr>
+                                <th>順位</th>
+                                <th>会社名</th>
+                                <th>苦情件数</th>
+                                <th>主要カテゴリ</th>
+                                <th>前年比</th>
+                                <th>GBase訴求ポイント</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>あいおいニッセイ同和</td>
+                                <td style="font-weight:bold;color:var(--danger);">26,114件</td>
+                                <td>保険金関係 52%</td>
+                                <td style="color:var(--danger);">▲3%</td>
+                                <td>事故受付・進捗照会Bot</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>東京海上日動</td>
+                                <td style="font-weight:bold;color:var(--danger);">25,000件</td>
+                                <td>保険金関係 48%</td>
+                                <td style="color:var(--success);">▼5%</td>
+                                <td>多言語クレーム対応システム</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>損保ジャパン</td>
+                                <td style="font-weight:bold;color:var(--warning);">22,850件</td>
+                                <td>保険金関係 50%</td>
+                                <td style="color:var(--success);">▼8%</td>
+                                <td>24時間事故対応Bot</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>三井住友海上</td>
+                                <td style="font-weight:bold;color:var(--warning);">14,561件</td>
+                                <td>契約・募集 35%</td>
+                                <td style="color:var(--success);">▼10%</td>
+                                <td>代理店サポートシステム</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>ソニー損保</td>
+                                <td style="font-weight:bold;">8,234件</td>
+                                <td>保険金関係 45%</td>
+                                <td style="color:var(--success);">▼12%</td>
+                                <td>デジタル事故対応強化</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>楽天損保</td>
+                                <td style="font-weight:bold;">5,892件</td>
+                                <td>契約関係 42%</td>
+                                <td style="color:var(--danger);">▲15%</td>
+                                <td>契約手続きガイド自動化</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>SBI損保</td>
+                                <td style="font-weight:bold;">4,567件</td>
+                                <td>保険金関係 40%</td>
+                                <td style="color:var(--success);">▼6%</td>
+                                <td>保険金請求サポートBot</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>アクサダイレクト</td>
+                                <td style="font-weight:bold;">3,245件</td>
+                                <td>契約関係 38%</td>
+                                <td style="color:var(--muted);">±0%</td>
+                                <td>多言語契約サポート</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>苦情カテゴリ分析</h2>
+                <div class="painpoint-grid">
+                    <div class="painpoint-card" style="border-left-color: var(--danger);">
+                        <h4>保険金・給付金関係（平均40%）</h4>
+                        <p>支払い遅延、査定結果への不満、手続き複雑さが主因。24時間進捗照会Botで30%削減可能。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:90%"></div></div>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--warning);">
+                        <h4>新契約関係（平均35%）</h4>
+                        <p>説明不足、条件誤解、強引な勧誘。FAQ Bot + 契約内容確認システムで改善。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-medium" style="width:75%"></div></div>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--secondary);">
+                        <h4>保全関係（平均15%）</h4>
+                        <p>住所変更、契約内容変更の手続き煩雑さ。セルフサービスBotで対応時間削減。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-low" style="width:60%"></div></div>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--muted);">
+                        <h4>収納関係（平均10%）</h4>
+                        <p>保険料の引落し、振替手続き。自動リマインダーと手続きガイドで対応。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-low" style="width:45%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>GBase Support導入による苦情削減シミュレーション</h2>
+                <div class="summary-table-wrapper">
+                    <table class="data-table summary-table">
+                        <thead>
+                            <tr>
+                                <th>対象企業</th>
+                                <th>現状苦情件数</th>
+                                <th>Bot対応可能比率</th>
+                                <th>期待削減件数</th>
+                                <th>年間コスト削減効果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>アフラック生命</td>
+                                <td>52,817件</td>
+                                <td>65%</td>
+                                <td style="color:var(--success);font-weight:bold;">▼34,331件</td>
+                                <td>約3.4億円</td>
+                            </tr>
+                            <tr>
+                                <td>住友生命</td>
+                                <td>52,184件</td>
+                                <td>60%</td>
+                                <td style="color:var(--success);font-weight:bold;">▼31,310件</td>
+                                <td>約3.1億円</td>
+                            </tr>
+                            <tr>
+                                <td>日本生命</td>
+                                <td>45,925件</td>
+                                <td>55%</td>
+                                <td style="color:var(--success);font-weight:bold;">▼25,259件</td>
+                                <td>約2.5億円</td>
+                            </tr>
+                            <tr>
+                                <td>あいおいニッセイ同和</td>
+                                <td>26,114件</td>
+                                <td>70%</td>
+                                <td style="color:var(--success);font-weight:bold;">▼18,280件</td>
+                                <td>約1.8億円</td>
+                            </tr>
+                            <tr>
+                                <td>東京海上日動</td>
+                                <td>25,000件</td>
+                                <td>65%</td>
+                                <td style="color:var(--success);font-weight:bold;">▼16,250件</td>
+                                <td>約1.6億円</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top:1rem;font-size:0.85rem;color:var(--muted);">
+                    ※削減効果は苦情1件あたりの対応コストを約1万円と仮定して算出。実際の効果は企業の状況により異なります。
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>苦情対応セールストーク例</h2>
+                <div class="painpoint-grid">
+                    <div class="painpoint-card" style="border-left-color: var(--primary);">
+                        <h4>アフラック生命向け</h4>
+                        <p>「御社の苦情5.2万件の42%は給付金関係。GBase Supportの24時間対応Botで、給付金手続きの問い合わせを自動化し、約3.4億円のコスト削減と顧客満足度向上を同時に実現できます。」</p>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--primary);">
+                        <h4>東京海上日動向け</h4>
+                        <p>「事故対応に関する苦情2.5万件。GBase Supportの10言語対応と24時間Bot機能で、外国人顧客対応と夜間事故受付を自動化。海外事業65%のグローバル展開を強力にサポートします。」</p>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--primary);">
+                        <h4>住友生命向け</h4>
+                        <p>「新契約関係の苦情38%。契約説明の多言語Bot化と、手続きガイドの24時間提供で、顧客の疑問を即座に解消。苦情発生前の予防的対応が可能になります。」</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -628,14 +902,14 @@
         // Company Data
         const companies = [
             // 生命保険 - 大手
-            {id:1,name:"日本生命保険相互会社",type:"life",category:"major",tier:"tier1",score:95,plan:"Enterprise",url:"https://www.nissay.co.jp/",group:"独立系（業界最大手）",features:"DX投資意欲高、営業職員約5万人"},
-            {id:2,name:"第一生命保険株式会社",type:"life",category:"major",tier:"tier1",score:93,plan:"Enterprise",url:"https://www.dai-ichi-life.co.jp/",group:"第一生命HD",features:"攻めのDX推進、AI活用積極"},
-            {id:3,name:"住友生命保険相互会社",type:"life",category:"major",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sumitomolife.co.jp/",group:"独立系",features:"デジタル化推進中"},
-            {id:4,name:"明治安田生命保険相互会社",type:"life",category:"major",tier:"tier1",score:89,plan:"Enterprise",url:"https://www.meijiyasuda.co.jp/",group:"独立系",features:"MYパレット導入、300億円DX投資"},
-            {id:5,name:"株式会社かんぽ生命保険",type:"life",category:"major",tier:"tier1",score:88,plan:"Enterprise",url:"https://www.jp-life.japanpost.jp/",group:"日本郵政グループ",features:"全国展開、高齢者対応ニーズ"},
+            {id:1,name:"日本生命保険相互会社",type:"life",category:"major",tier:"tier1",score:95,plan:"Enterprise",url:"https://www.nissay.co.jp/",group:"独立系（業界最大手）",features:"DX投資意欲高、営業職員約5万人",complaints:{count:45925,category:"保全関係 35%",yoy:"▼3%",point:"契約変更手続きの自動ガイド"}},
+            {id:2,name:"第一生命保険株式会社",type:"life",category:"major",tier:"tier1",score:93,plan:"Enterprise",url:"https://www.dai-ichi-life.co.jp/",group:"第一生命HD",features:"攻めのDX推進、AI活用積極",complaints:{count:38420,category:"保険金関係 30%",yoy:"▼7%",point:"支払い状況照会システム連携"}},
+            {id:3,name:"住友生命保険相互会社",type:"life",category:"major",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sumitomolife.co.jp/",group:"独立系",features:"デジタル化推進中",complaints:{count:52184,category:"新契約関係 38%",yoy:"▲5%",point:"契約説明の多言語・24時間対応"}},
+            {id:4,name:"明治安田生命保険相互会社",type:"life",category:"major",tier:"tier1",score:89,plan:"Enterprise",url:"https://www.meijiyasuda.co.jp/",group:"独立系",features:"MYパレット導入、300億円DX投資",complaints:{count:35812,category:"保全関係 40%",yoy:"▲2%",point:"各種手続きナビゲーション"}},
+            {id:5,name:"株式会社かんぽ生命保険",type:"life",category:"major",tier:"tier1",score:88,plan:"Enterprise",url:"https://www.jp-life.japanpost.jp/",group:"日本郵政グループ",features:"全国展開、高齢者対応ニーズ",complaints:{count:28546,category:"新契約関係 55%",yoy:"▼15%",point:"高齢者向け音声対話システム"}},
             // 生命保険 - 外資系
-            {id:6,name:"アフラック生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:88,plan:"Business Elite",url:"https://www.aflac.co.jp/",group:"Aflac Inc.",features:"外資系大手、多言語ニーズ高"},
-            {id:7,name:"メットライフ生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:87,plan:"Business Elite",url:"https://www.metlife.co.jp/",group:"MetLife Inc.",features:"グローバル展開、先進IT"},
+            {id:6,name:"アフラック生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:88,plan:"Business Elite",url:"https://www.aflac.co.jp/",group:"Aflac Inc.",features:"外資系大手、多言語ニーズ高",complaints:{count:52817,category:"保険金・給付金 42%",yoy:"▼8%",point:"給付金請求プロセスのFAQ自動化"}},
+            {id:7,name:"メットライフ生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:87,plan:"Business Elite",url:"https://www.metlife.co.jp/",group:"MetLife Inc.",features:"グローバル展開、先進IT",complaints:{count:43717,category:"新契約関係 45%",yoy:"▼12%",point:"契約内容説明の多言語Bot"}},
             {id:8,name:"アクサ生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.axa.co.jp",group:"AXAグループ",features:"グローバル、多言語対応"},
             {id:9,name:"プルデンシャル生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:84,plan:"Business Elite",url:"https://www.prudential.co.jp/",group:"Prudential Financial",features:"外資系大手、営業支援ニーズ"},
             {id:10,name:"ジブラルタ生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.gib-life.co.jp/",group:"Prudential Financial",features:"外資系大手"},
@@ -646,7 +920,7 @@
             {id:14,name:"楽天生命保険株式会社",type:"life",category:"internet",tier:"tier2",score:76,plan:"Business",url:"https://www.rakuten-insurance.co.jp/",group:"楽天グループ",features:"テクノロジー投資積極"},
             {id:15,name:"SBI生命保険株式会社",type:"life",category:"internet",tier:"tier2",score:75,plan:"Professional",url:"https://www.sbilife.co.jp/",group:"SBIグループ",features:"ネット生保"},
             // 生命保険 - 国内系
-            {id:16,name:"ソニー生命保険株式会社",type:"life",category:"domestic",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.sonylife.co.jp/",group:"ソニーフィナンシャルG",features:"テクノロジー親和性高"},
+            {id:16,name:"ソニー生命保険株式会社",type:"life",category:"domestic",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.sonylife.co.jp/",group:"ソニーフィナンシャルG",features:"テクノロジー親和性高",complaints:{count:12845,category:"保険金関係 28%",yoy:"±0%",point:"FP支援ナレッジBot"}},
             {id:17,name:"東京海上日動あんしん生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.tmn-anshin.co.jp/",group:"東京海上HD",features:"グループ連携"},
             {id:18,name:"SOMPOひまわり生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:80,plan:"Business Elite",url:"https://www.himawari-life.co.jp/",group:"SOMPOホールディングス",features:"FAQシステム導入実績"},
             {id:19,name:"三井住友海上あいおい生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:78,plan:"Business Elite",url:"https://www.msa-life.co.jp/",group:"MS&ADグループ",features:"金融グループ"},
@@ -677,19 +951,19 @@
             {id:42,name:"なないろ生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:58,plan:"Professional",url:"https://www.nanairolife.co.jp/",group:"朝日生命グループ",features:"国内系"},
 
             // 損害保険 - 大手4社
-            {id:43,name:"東京海上日動火災保険株式会社",type:"nonlife",category:"major",tier:"tier1",score:92,plan:"Enterprise",url:"https://www.tokiomarine-nichido.co.jp/",group:"東京海上HD",features:"業界最大手、海外65%、生成AI本格活用"},
-            {id:44,name:"損害保険ジャパン株式会社",type:"nonlife",category:"major",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sompo-japan.co.jp/",group:"SOMPOホールディングス",features:"CDaO体制、全社員AI展開、おしそんLLM"},
-            {id:45,name:"三井住友海上火災保険株式会社",type:"nonlife",category:"major",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.ms-ins.com/",group:"MS&ADグループ",features:"MS1 Brain、NEC協業、2027年合併予定"},
-            {id:46,name:"あいおいニッセイ同和損害保険株式会社",type:"nonlife",category:"major",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.aioinissaydowa.co.jp/",group:"MS&ADグループ",features:"テレマティクスリーダー、生成AI専用保険"},
+            {id:43,name:"東京海上日動火災保険株式会社",type:"nonlife",category:"major",tier:"tier1",score:92,plan:"Enterprise",url:"https://www.tokiomarine-nichido.co.jp/",group:"東京海上HD",features:"業界最大手、海外65%、生成AI本格活用",complaints:{count:25000,category:"保険金関係 48%",yoy:"▼5%",point:"多言語クレーム対応システム"}},
+            {id:44,name:"損害保険ジャパン株式会社",type:"nonlife",category:"major",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sompo-japan.co.jp/",group:"SOMPOホールディングス",features:"CDaO体制、全社員AI展開、おしそんLLM",complaints:{count:22850,category:"保険金関係 50%",yoy:"▼8%",point:"24時間事故対応Bot"}},
+            {id:45,name:"三井住友海上火災保険株式会社",type:"nonlife",category:"major",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.ms-ins.com/",group:"MS&ADグループ",features:"MS1 Brain、NEC協業、2027年合併予定",complaints:{count:14561,category:"契約・募集 35%",yoy:"▼10%",point:"代理店サポートシステム"}},
+            {id:46,name:"あいおいニッセイ同和損害保険株式会社",type:"nonlife",category:"major",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.aioinissaydowa.co.jp/",group:"MS&ADグループ",features:"テレマティクスリーダー、生成AI専用保険",complaints:{count:26114,category:"保険金関係 52%",yoy:"▲3%",point:"事故受付・進捗照会Bot"}},
 
             // 損害保険 - ダイレクト系
-            {id:47,name:"ソニー損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sonysonpo.co.jp/",group:"ソニーフィナンシャルG",features:"ダイレクト22年連続No.1、NPS1位"},
+            {id:47,name:"ソニー損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sonysonpo.co.jp/",group:"ソニーフィナンシャルG",features:"ダイレクト22年連続No.1、NPS1位",complaints:{count:8234,category:"保険金関係 45%",yoy:"▼12%",point:"デジタル事故対応強化"}},
             {id:48,name:"東京海上ダイレクト損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:85,plan:"Professional",url:"https://www.e-design.net/",group:"東京海上HD",features:"生成AI業務支援ツール開発"},
-            {id:49,name:"楽天損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:83,plan:"Professional",url:"https://www.rakuten-sonpo.co.jp/",group:"楽天グループ",features:"AIアバター業界初導入、新規+82%"},
+            {id:49,name:"楽天損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:83,plan:"Professional",url:"https://www.rakuten-sonpo.co.jp/",group:"楽天グループ",features:"AIアバター業界初導入、新規+82%",complaints:{count:5892,category:"契約関係 42%",yoy:"▲15%",point:"契約手続きガイド自動化"}},
             {id:50,name:"SOMPOダイレクト損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:82,plan:"Professional",url:"https://www.sompo-direct.co.jp/",group:"SOMPOホールディングス",features:"Guidewire導入、業界2位"},
-            {id:51,name:"SBI損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:80,plan:"Professional",url:"https://www.sbisonpo.co.jp/",group:"SBIグループ",features:"Microsoft Copilot導入、高成長"},
+            {id:51,name:"SBI損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:80,plan:"Professional",url:"https://www.sbisonpo.co.jp/",group:"SBIグループ",features:"Microsoft Copilot導入、高成長",complaints:{count:4567,category:"保険金関係 40%",yoy:"▼6%",point:"保険金請求サポートBot"}},
             {id:52,name:"三井ダイレクト損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:78,plan:"Standard",url:"https://www.mitsui-direct.co.jp/",group:"MS&ADグループ",features:"KARAKURI chatbot、HDI三つ星"},
-            {id:53,name:"アクサ損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:75,plan:"Standard",url:"https://www.axa-direct.co.jp/",group:"AXAグループ",features:"DX基盤完成済み、110万件"},
+            {id:53,name:"アクサ損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:75,plan:"Standard",url:"https://www.axa-direct.co.jp/",group:"AXAグループ",features:"DX基盤完成済み、110万件",complaints:{count:3245,category:"契約関係 38%",yoy:"±0%",point:"多言語契約サポート"}},
             {id:54,name:"au損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:72,plan:"Standard",url:"https://www.au-sonpo.co.jp/",group:"auフィナンシャルHD",features:"DX認定事業者、KDDI連携"},
 
             // 損害保険 - 宠物保险
@@ -817,6 +1091,20 @@
             const c = companies.find(x => x.id === id);
             if (!c) return;
 
+            let complaintsHtml = '';
+            if (c.complaints) {
+                complaintsHtml = `
+                <div style="margin-top:1.5rem;padding:1rem;background:#fef3c7;border-radius:0.5rem;border-left:4px solid var(--warning);">
+                    <strong style="color:var(--warning);">📊 苦情統計データ</strong>
+                    <table style="margin-top:0.75rem;width:100%;">
+                        <tr><th style="width:40%;padding:0.5rem;background:rgba(0,0,0,0.05);">苦情件数</th><td style="padding:0.5rem;font-weight:bold;color:var(--danger);">${c.complaints.count.toLocaleString()}件</td></tr>
+                        <tr><th style="padding:0.5rem;background:rgba(0,0,0,0.05);">主要カテゴリ</th><td style="padding:0.5rem;">${c.complaints.category}</td></tr>
+                        <tr><th style="padding:0.5rem;background:rgba(0,0,0,0.05);">前年比</th><td style="padding:0.5rem;">${c.complaints.yoy}</td></tr>
+                        <tr><th style="padding:0.5rem;background:rgba(0,0,0,0.05);">GBase訴求ポイント</th><td style="padding:0.5rem;color:var(--primary);font-weight:500;">${c.complaints.point}</td></tr>
+                    </table>
+                </div>`;
+            }
+
             document.getElementById('modal-title').textContent = c.name;
             document.getElementById('modal-body').innerHTML = `
                 <table>
@@ -830,6 +1118,7 @@
                     <tr><th>特徴・訴求ポイント</th><td>${c.features}</td></tr>
                     <tr><th>公式サイト</th><td><a href="${c.url}" target="_blank" style="color:var(--primary);">${c.url}</a></td></tr>
                 </table>
+                ${complaintsHtml}
                 <div style="margin-top:1.5rem;padding:1rem;background:var(--bg);border-radius:0.5rem;">
                     <strong>アプローチ戦略</strong>
                     <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--muted);">
