@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.seiho.or.jp)",
+      "Skill(skill-creator)",
+      "Bash(python:*)",
+      "Bash(set PYTHONIOENCODING=utf-8:*)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\dmkd3\\\\.claude\\\\skills\\\\insurance-painpoint-analyzer\")",
+      "Bash(powershell -Command \"Compress-Archive -Path ''insurance-painpoint-analyzer\\\\*'' -DestinationPath ''insurance-painpoint-analyzer.zip'' -Force\")",
+      "WebSearch",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git fetch:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
