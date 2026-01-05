@@ -4,40 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GBase Solution - 保険業界向けソリューション調研</title>
-    <meta http-equiv="refresh" content="0; url=保険業界調研報告_GBaseSupport.html">
+    <meta http-equiv="refresh" content="0; url=保険業界統合調研報告_GBaseSupport.html">
     <style>
         :root {
             --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
             --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --muted-color: #64748b;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
-            background: var(--bg-color);
+            font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
+            padding: 2rem;
         }
         .container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             text-align: center;
-            padding: 2rem;
         }
         h1 {
             color: var(--primary-color);
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
         }
-        a {
+        .subtitle {
+            color: var(--muted-color);
+            margin-bottom: 2rem;
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+        .loading span {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading span:nth-child(1) { animation-delay: -0.32s; }
+        .loading span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .reports {
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .reports h3 {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .report-list {
+            list-style: none;
+        }
+        .report-list li {
+            margin-bottom: 0.75rem;
+        }
+        .report-list a {
             color: var(--primary-color);
-            font-size: 1.2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        .report-list a:hover {
+            background: #e0e7ff;
+            transform: translateX(5px);
+        }
+        .report-list .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            margin-left: auto;
+        }
+        .badge-new { background: #d1fae5; color: #059669; }
+        .badge-life { background: #dbeafe; color: #1d4ed8; }
+        .badge-nonlife { background: #fef3c7; color: #b45309; }
+        footer {
+            margin-top: 2rem;
+            color: var(--muted-color);
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>GBase Solution - 保険業界向けソリューション調研</h1>
-        <p>リダイレクト中...</p>
-        <p><a href="保険業界調研報告_GBaseSupport.html">自動的にリダイレクトされない場合はこちらをクリック</a></p>
+        <h1>GBase Solution</h1>
+        <p class="subtitle">保険業界向けAIソリューション調研レポート</p>
+
+        <div class="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p>統合レポートへリダイレクト中...</p>
+
+        <div class="reports">
+            <h3>利用可能なレポート</h3>
+            <ul class="report-list">
+                <li>
+                    <a href="保険業界統合調研報告_GBaseSupport.html">
+                        <span>📊</span>
+                        <span>保険業界統合調研報告（72社）</span>
+                        <span class="badge badge-new">NEW</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="保険業界調研報告_GBaseSupport.html">
+                        <span>📋</span>
+                        <span>生命保険業界調研報告（41社）</span>
+                        <span class="badge badge-life">生保</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="损害保险行业痛点分析报告.html">
+                        <span>📋</span>
+                        <span>損害保険業界分析報告</span>
+                        <span class="badge badge-nonlife">損保</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>GBase Support - AI Knowledge Agent | Sparticle株式会社</p>
+            <p>最終更新: 2026年1月5日</p>
+        </footer>
     </div>
 </body>
 </html>

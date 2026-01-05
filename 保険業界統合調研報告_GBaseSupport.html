@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保険業界統合調研報告 - GBase Support ソリューション適合性分析</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2.5rem 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+        header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        header .subtitle { opacity: 0.9; }
+        header .meta { margin-top: 1rem; font-size: 0.85rem; opacity: 0.8; display: flex; gap: 2rem; flex-wrap: wrap; }
+
+        /* Summary Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: var(--card);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card .number { font-size: 2rem; font-weight: bold; color: var(--primary); }
+        .stat-card .label { color: var(--muted); font-size: 0.8rem; margin-top: 0.25rem; }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .tab:hover { border-color: var(--primary); }
+        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Search & Filters */
+        .filters-section {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .filters-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus { outline: none; border-color: var(--primary); }
+        .filter-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            background: white;
+            min-width: 150px;
+        }
+        .filter-select:focus { outline: none; border-color: var(--primary); }
+
+        /* Company Grid */
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1rem;
+        }
+        .company-card {
+            background: var(--card);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .company-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .company-card.tier1 { border-left-color: var(--success); }
+        .company-card.tier2 { border-left-color: var(--warning); }
+        .company-card.tier3 { border-left-color: var(--muted); }
+
+        .company-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+        .company-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+        .company-score {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .company-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; }
+        .company-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.5rem; }
+        .tag {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .tag-life { background: #dbeafe; color: #1d4ed8; }
+        .tag-nonlife { background: #fef3c7; color: #b45309; }
+        .tag-tier1 { background: #d1fae5; color: #059669; }
+        .tag-tier2 { background: #fef3c7; color: #b45309; }
+        .tag-tier3 { background: #f3f4f6; color: #6b7280; }
+        .tag-plan { background: #e0e7ff; color: #4338ca; }
+        .tag-category { background: #fce7f3; color: #be185d; }
+
+        /* Section */
+        .section {
+            background: var(--card);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .section h3 { color: var(--text); font-size: 1.1rem; margin: 1rem 0 0.75rem; }
+
+        /* Pain Points */
+        .painpoint-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .painpoint-card {
+            background: var(--bg);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border-left: 4px solid var(--warning);
+        }
+        .painpoint-card h4 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .painpoint-card p { font-size: 0.85rem; color: var(--muted); }
+        .severity-bar {
+            margin-top: 0.75rem;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .severity-fill { height: 100%; border-radius: 3px; }
+        .severity-high { background: var(--danger); }
+        .severity-medium { background: var(--warning); }
+        .severity-low { background: var(--success); }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 1rem;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            border-radius: 1rem 1rem 0 0;
+        }
+        .modal-header h3 { font-size: 1.2rem; }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover { background: var(--bg); }
+        .modal-body { padding: 1.5rem; }
+        .modal-body table { width: 100%; border-collapse: collapse; }
+        .modal-body th, .modal-body td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .modal-body th { background: var(--bg); font-weight: 600; width: 30%; }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table th, .data-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .data-table th { background: var(--bg); font-weight: 600; position: sticky; top: 0; }
+        .data-table tr:hover { background: var(--bg); }
+
+        /* Hidden */
+        .hidden { display: none !important; }
+
+        /* Tab Content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Summary Table */
+        .summary-table-wrapper { overflow-x: auto; }
+        .summary-table { min-width: 800px; }
+
+        /* Footer */
+        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .company-grid { grid-template-columns: 1fr; }
+            .filters-row { flex-direction: column; }
+            .search-box, .filter-select { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>保険業界統合調研報告</h1>
+            <p class="subtitle">GBase Support ソリューション適合性分析 - 生命保険 + 損害保険 72社</p>
+            <div class="meta">
+                <span>作成日: 2026年1月5日</span>
+                <span>生命保険協会会員: 41社</span>
+                <span>損害保険協会会員: 31社</span>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">72</div>
+                <div class="label">対象企業総数</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">41</div>
+                <div class="label">生命保険会社</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">31</div>
+                <div class="label">損害保険会社</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="tier1-count">0</div>
+                <div class="label">Tier 1 企業</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="tier2-count">0</div>
+                <div class="label">Tier 2 企業</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">10</div>
+                <div class="label">対応言語数</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="companies">企業一覧・検索</div>
+            <div class="tab" data-tab="painpoints">業界ペインポイント</div>
+            <div class="tab" data-tab="solutions">GBase機能マッチング</div>
+            <div class="tab" data-tab="summary">総合サマリー</div>
+        </div>
+
+        <!-- Tab: Companies -->
+        <div class="tab-content active" id="tab-companies">
+            <div class="filters-section">
+                <div class="filters-row">
+                    <input type="text" class="search-box" id="search" placeholder="会社名で検索...">
+                    <select class="filter-select" id="filter-type">
+                        <option value="">全業種</option>
+                        <option value="life">生命保険</option>
+                        <option value="nonlife">損害保険</option>
+                    </select>
+                    <select class="filter-select" id="filter-tier">
+                        <option value="">全優先度</option>
+                        <option value="tier1">Tier 1（最優先）</option>
+                        <option value="tier2">Tier 2（重点）</option>
+                        <option value="tier3">Tier 3（機会型）</option>
+                    </select>
+                    <select class="filter-select" id="filter-category">
+                        <option value="">全カテゴリ</option>
+                        <option value="major">大手</option>
+                        <option value="foreign">外資系</option>
+                        <option value="direct">ダイレクト</option>
+                        <option value="mutual">相互会社</option>
+                        <option value="internet">ネット系</option>
+                        <option value="pet">ペット保険</option>
+                        <option value="travel">旅行保険</option>
+                        <option value="reinsurance">再保険</option>
+                        <option value="regional">地域系</option>
+                        <option value="specialty">特殊領域</option>
+                    </select>
+                    <select class="filter-select" id="filter-plan">
+                        <option value="">全プラン</option>
+                        <option value="Enterprise">Enterprise</option>
+                        <option value="Business Elite">Business Elite</option>
+                        <option value="Business">Business</option>
+                        <option value="Professional">Professional</option>
+                        <option value="Starter">Starter</option>
+                    </select>
+                    <select class="filter-select" id="sort-by">
+                        <option value="score-desc">適合度（高い順）</option>
+                        <option value="score-asc">適合度（低い順）</option>
+                        <option value="name-asc">会社名（あ順）</option>
+                    </select>
+                </div>
+                <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+                    表示中: <span id="showing-count">0</span> / 72 社
+                </div>
+            </div>
+
+            <div class="company-grid" id="company-grid">
+                <!-- Companies will be injected here -->
+            </div>
+        </div>
+
+        <!-- Tab: Pain Points -->
+        <div class="tab-content" id="tab-painpoints">
+            <div class="section">
+                <h2>生命保険業界の主要ペインポイント</h2>
+                <div class="painpoint-grid">
+                    <div class="painpoint-card">
+                        <h4>DX・デジタル化の遅れ</h4>
+                        <p>レガシーシステム問題、紙ベース業務、サイロ化。30年運用の基幹系システム刷新が困難。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:90%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>カスタマーサポート負担</h4>
+                        <p>コールセンター人手不足、離職率の高さ、24時間対応の困難さ。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:85%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>外国人顧客対応</h4>
+                        <p>在留外国人204万人、言語的障壁、翻訳コスト増大。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-medium" style="width:75%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>高齢者デジタルデバイド</h4>
+                        <p>70歳以上の57.8%がスマホ未利用、高齢者向けUI離脱率72%。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-medium" style="width:80%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>営業職員教育</h4>
+                        <p>商品知識習得、OJT品質ばらつき、法規制対応。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-medium" style="width:70%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>知識管理・情報共有</h4>
+                        <p>情報サイロ、属人化、FAQ管理の非効率、ナレッジ散逸。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-low" style="width:65%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>損害保険業界の主要ペインポイント</h2>
+                <div class="painpoint-grid">
+                    <div class="painpoint-card">
+                        <h4>顧客サービス効率低下</h4>
+                        <p>電話客服がピーク対応困難、待ち時間15-30分、放棄率40%。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:85%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>保険金請求プロセス複雑</h4>
+                        <p>事故報告から支払いまで2-4週間、顧客が3-5回連絡必要。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:85%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>多言語サポート不足</h4>
+                        <p>在日外国人300万人超、外国人顧客クレーム率2.5倍。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-medium" style="width:75%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>商品説明の複雑さ</h4>
+                        <p>専門用語過多、誤解によるクレーム35%。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-medium" style="width:70%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>代理店サポート負担</h4>
+                        <p>20万+代理店、研修コスト数十億円/年。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:85%"></div></div>
+                    </div>
+                    <div class="painpoint-card">
+                        <h4>時間外サービス不足</h4>
+                        <p>夜間・週末の問い合わせが全体の30%。</p>
+                        <div class="severity-bar"><div class="severity-fill severity-high" style="width:80%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Solutions -->
+        <div class="tab-content" id="tab-solutions">
+            <div class="section">
+                <h2>GBase Support 機能マッチング</h2>
+                <div class="summary-table-wrapper">
+                    <table class="data-table summary-table">
+                        <thead>
+                            <tr>
+                                <th>ペインポイント</th>
+                                <th>GBase Support機能</th>
+                                <th>期待効果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DX・デジタル化遅れ</td>
+                                <td>ノーコード構築、知識庫学習、システム連携</td>
+                                <td>IT人材不足でも導入可、既存文書即座活用</td>
+                            </tr>
+                            <tr>
+                                <td>カスタマーサポート負担</td>
+                                <td>24時間自動応答、FAQ自助解決、情報源明示</td>
+                                <td>問い合わせ70%削減、応答品質均一化</td>
+                            </tr>
+                            <tr>
+                                <td>外国人顧客対応</td>
+                                <td>10言語サポート、自動翻訳機能</td>
+                                <td>多言語市場開拓、翻訳コスト大幅削減</td>
+                            </tr>
+                            <tr>
+                                <td>高齢者デジタルデバイド</td>
+                                <td>音声対話、デジタルヒューマン</td>
+                                <td>操作不要の対話、親しみやすいUI</td>
+                            </tr>
+                            <tr>
+                                <td>営業職員教育</td>
+                                <td>知識庫検索、深度思考モード</td>
+                                <td>商品知識の即座取得、研修効率化</td>
+                            </tr>
+                            <tr>
+                                <td>知識管理・情報共有</td>
+                                <td>FAQ樹構造、Excel導入、アクセス権限</td>
+                                <td>体系的知識整理、部門別情報管理</td>
+                            </tr>
+                            <tr>
+                                <td>保険金請求複雑</td>
+                                <td>進捗照会Bot、資料ガイド</td>
+                                <td>24時間自助照会、重複電話削減</td>
+                            </tr>
+                            <tr>
+                                <td>代理店サポート</td>
+                                <td>内部知識Bot、商品FAQ</td>
+                                <td>本社照会50%削減、新人研修短縮</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>セキュリティ・コンプライアンス対応</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>要件</th><th>GBase Support対応</th><th>備考</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>データセキュリティ</td><td>エンドツーエンド暗号化</td><td>金融業界基準対応</td></tr>
+                        <tr><td>国際認証</td><td>ISO 27001認証取得</td><td>第三者監査済み</td></tr>
+                        <tr><td>データ主権</td><td>オンプレミス対応可能</td><td>データ外部送信なし</td></tr>
+                        <tr><td>監査対応</td><td>情報源明示機能</td><td>回答根拠追跡可能</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>料金プラン参考</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>プラン</th><th>月額（税別）</th><th>推奨規模</th><th>主要機能</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Starter</strong></td><td>49,800円</td><td>小規模・試験導入</td><td>基本FAQ、1ボット</td></tr>
+                        <tr><td><strong>Professional</strong></td><td>99,800円</td><td>中規模企業</td><td>AI Agent、多ボット</td></tr>
+                        <tr><td><strong>Business</strong></td><td>149,800円</td><td>大規模部門</td><td>高並発、多チャネル</td></tr>
+                        <tr><td><strong>Business Elite</strong></td><td>398,000円</td><td>大企業全社</td><td>全機能、優先サポート</td></tr>
+                        <tr><td><strong>Enterprise</strong></td><td>お問い合わせ</td><td>メガ保険・グループ</td><td>オンプレミス、カスタム開発</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Summary -->
+        <div class="tab-content" id="tab-summary">
+            <div class="section">
+                <h2>優先ターゲット企業（Tier 1）</h2>
+                <h3>生命保険 - 最優先アプローチ</h3>
+                <table class="data-table">
+                    <thead><tr><th>会社名</th><th>カテゴリ</th><th>適合度</th><th>推奨プラン</th><th>主要訴求</th></tr></thead>
+                    <tbody>
+                        <tr><td>日本生命</td><td>大手</td><td>95</td><td>Enterprise</td><td>業界最大手、DX投資意欲高</td></tr>
+                        <tr><td>第一生命</td><td>大手</td><td>93</td><td>Enterprise</td><td>攻めのDX推進、AI活用積極</td></tr>
+                        <tr><td>住友生命</td><td>大手</td><td>90</td><td>Enterprise</td><td>デジタル化推進中</td></tr>
+                        <tr><td>アフラック</td><td>外資系</td><td>88</td><td>Business Elite</td><td>多言語ニーズ高</td></tr>
+                        <tr><td>メットライフ</td><td>外資系</td><td>87</td><td>Business Elite</td><td>グローバル展開、先進IT</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>損害保険 - 最優先アプローチ</h3>
+                <table class="data-table">
+                    <thead><tr><th>会社名</th><th>カテゴリ</th><th>適合度</th><th>推奨プラン</th><th>主要訴求</th></tr></thead>
+                    <tbody>
+                        <tr><td>東京海上日動</td><td>大手</td><td>92</td><td>Enterprise</td><td>海外65%、生成AI本格活用</td></tr>
+                        <tr><td>損保ジャパン</td><td>大手</td><td>90</td><td>Enterprise</td><td>CDaO体制、全社員AI展開</td></tr>
+                        <tr><td>ソニー損保</td><td>ダイレクト</td><td>90</td><td>Enterprise</td><td>22年連続シェアNo.1</td></tr>
+                        <tr><td>ジェイアイ傷害火災</td><td>旅行</td><td>90</td><td>Business Elite</td><td>JTB+AIG、多言語需要極高</td></tr>
+                        <tr><td>アニコム損保</td><td>ペット</td><td>88</td><td>Business</td><td>ペット保険No.1、デジタル先進</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>業種別アプローチ戦略</h2>
+                <table class="data-table">
+                    <thead><tr><th>ターゲット層</th><th>主要訴求ポイント</th><th>期待効果</th></tr></thead>
+                    <tbody>
+                        <tr><td>経営層・CIO</td><td>DX推進、コスト削減、競争力強化</td><td>問い合わせ70%削減</td></tr>
+                        <tr><td>カスタマーサポート部門</td><td>24時間対応、品質均一化、負荷軽減</td><td>顧客満足度向上</td></tr>
+                        <tr><td>営業推進部門</td><td>営業支援、知識検索、教育効率化</td><td>準備・報告作業30%削減</td></tr>
+                        <tr><td>IT部門</td><td>ノーコード、既存連携、セキュリティ</td><td>導入期間短縮</td></tr>
+                        <tr><td>海外事業部門</td><td>10言語対応、自動翻訳、グローバル展開</td><td>翻訳コスト大幅削減</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>導入ステップ提案</h2>
+                <div class="painpoint-grid">
+                    <div class="painpoint-card" style="border-left-color: var(--primary);">
+                        <h4>Phase 1: パイロット（1-2ヶ月）</h4>
+                        <p>特定部門・チャネルでの試験導入、既存FAQデータ移行、基本チャットボット構築</p>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--secondary);">
+                        <h4>Phase 2: 本格展開（2-3ヶ月）</h4>
+                        <p>全社展開、多チャネル対応、多言語追加、システム連携</p>
+                    </div>
+                    <div class="painpoint-card" style="border-left-color: var(--success);">
+                        <h4>Phase 3: 高度化（3-6ヶ月）</h4>
+                        <p>Agent機能活用、社内ナレッジ展開、営業支援拡大、継続改善</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 id="modal-title">会社詳細</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Content injected -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>本レポートは生命保険協会・損害保険協会会員企業の公開情報に基づき作成</p>
+            <p>GBase Support - AI Knowledge Agent | Sparticle株式会社 | 2026年1月</p>
+        </footer>
+    </div>
+
+    <script>
+        // Company Data
+        const companies = [
+            // 生命保険 - 大手
+            {id:1,name:"日本生命保険相互会社",type:"life",category:"major",tier:"tier1",score:95,plan:"Enterprise",url:"https://www.nissay.co.jp/",group:"独立系（業界最大手）",features:"DX投資意欲高、営業職員約5万人"},
+            {id:2,name:"第一生命保険株式会社",type:"life",category:"major",tier:"tier1",score:93,plan:"Enterprise",url:"https://www.dai-ichi-life.co.jp/",group:"第一生命HD",features:"攻めのDX推進、AI活用積極"},
+            {id:3,name:"住友生命保険相互会社",type:"life",category:"major",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sumitomolife.co.jp/",group:"独立系",features:"デジタル化推進中"},
+            {id:4,name:"明治安田生命保険相互会社",type:"life",category:"major",tier:"tier1",score:89,plan:"Enterprise",url:"https://www.meijiyasuda.co.jp/",group:"独立系",features:"MYパレット導入、300億円DX投資"},
+            {id:5,name:"株式会社かんぽ生命保険",type:"life",category:"major",tier:"tier1",score:88,plan:"Enterprise",url:"https://www.jp-life.japanpost.jp/",group:"日本郵政グループ",features:"全国展開、高齢者対応ニーズ"},
+            // 生命保険 - 外資系
+            {id:6,name:"アフラック生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:88,plan:"Business Elite",url:"https://www.aflac.co.jp/",group:"Aflac Inc.",features:"外資系大手、多言語ニーズ高"},
+            {id:7,name:"メットライフ生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:87,plan:"Business Elite",url:"https://www.metlife.co.jp/",group:"MetLife Inc.",features:"グローバル展開、先進IT"},
+            {id:8,name:"アクサ生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.axa.co.jp",group:"AXAグループ",features:"グローバル、多言語対応"},
+            {id:9,name:"プルデンシャル生命保険株式会社",type:"life",category:"foreign",tier:"tier1",score:84,plan:"Business Elite",url:"https://www.prudential.co.jp/",group:"Prudential Financial",features:"外資系大手、営業支援ニーズ"},
+            {id:10,name:"ジブラルタ生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.gib-life.co.jp/",group:"Prudential Financial",features:"外資系大手"},
+            {id:11,name:"マニュライフ生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:80,plan:"Business Elite",url:"https://www.manulife.co.jp/",group:"Manulife Financial",features:"グローバル展開"},
+            {id:12,name:"AIG損害保険株式会社",type:"life",category:"foreign",tier:"tier2",score:78,plan:"Business",url:"https://www.aig.co.jp/sonpo",group:"AIG Inc.",features:"全球化背景"},
+            // 生命保険 - ネット系
+            {id:13,name:"ライフネット生命保険株式会社",type:"life",category:"internet",tier:"tier2",score:78,plan:"Professional",url:"https://www.lifenet-seimei.co.jp/",group:"独立系",features:"AIチャットボット導入済み"},
+            {id:14,name:"楽天生命保険株式会社",type:"life",category:"internet",tier:"tier2",score:76,plan:"Business",url:"https://www.rakuten-insurance.co.jp/",group:"楽天グループ",features:"テクノロジー投資積極"},
+            {id:15,name:"SBI生命保険株式会社",type:"life",category:"internet",tier:"tier2",score:75,plan:"Professional",url:"https://www.sbilife.co.jp/",group:"SBIグループ",features:"ネット生保"},
+            // 生命保険 - 国内系
+            {id:16,name:"ソニー生命保険株式会社",type:"life",category:"domestic",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.sonylife.co.jp/",group:"ソニーフィナンシャルG",features:"テクノロジー親和性高"},
+            {id:17,name:"東京海上日動あんしん生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.tmn-anshin.co.jp/",group:"東京海上HD",features:"グループ連携"},
+            {id:18,name:"SOMPOひまわり生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:80,plan:"Business Elite",url:"https://www.himawari-life.co.jp/",group:"SOMPOホールディングス",features:"FAQシステム導入実績"},
+            {id:19,name:"三井住友海上あいおい生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:78,plan:"Business Elite",url:"https://www.msa-life.co.jp/",group:"MS&ADグループ",features:"金融グループ"},
+            {id:20,name:"オリックス生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:77,plan:"Business",url:"https://www.orixlife.co.jp/",group:"オリックスグループ",features:"テクノロジー投資積極"},
+            // 生命保険 - 相互会社・中堅
+            {id:21,name:"朝日生命保険相互会社",type:"life",category:"mutual",tier:"tier2",score:72,plan:"Professional",url:"https://www.asahi-life.co.jp/",group:"独立系",features:"相互会社"},
+            {id:22,name:"富国生命保険相互会社",type:"life",category:"mutual",tier:"tier2",score:70,plan:"Business",url:"https://www.fukoku-life.co.jp/",group:"独立系",features:"相互会社"},
+            {id:23,name:"大同生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:72,plan:"Business",url:"https://www.daido-life.co.jp/",group:"T&Dホールディングス",features:"中堅"},
+            {id:24,name:"太陽生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:70,plan:"Business",url:"https://www.taiyo-seimei.co.jp/",group:"T&Dホールディングス",features:"中堅"},
+            // 生命保険 - その他
+            {id:25,name:"エヌエヌ生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:72,plan:"Business",url:"https://www.nnlife.co.jp/",group:"NN Group",features:"外資系"},
+            {id:26,name:"FWD生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:71,plan:"Business",url:"https://www.fwdlife.co.jp",group:"FWDグループ",features:"外資系"},
+            {id:27,name:"チューリッヒ生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:70,plan:"Business",url:"https://www.zurichlife.co.jp/",group:"Zurich Insurance",features:"外資系"},
+            {id:28,name:"カーディフ生命保険株式会社",type:"life",category:"foreign",tier:"tier3",score:65,plan:"Professional",url:"https://life.cardif.co.jp/",group:"BNPパリバ",features:"外資系"},
+            {id:29,name:"クレディ・アグリコル生命保険株式会社",type:"life",category:"foreign",tier:"tier3",score:62,plan:"Professional",url:"https://www.ca-life.jp/",group:"Crédit Agricole",features:"外資系"},
+            {id:30,name:"第一フロンティア生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:68,plan:"Business",url:"https://www.d-frontier-life.co.jp/",group:"第一生命HD",features:"国内系"},
+            {id:31,name:"大樹生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:67,plan:"Business",url:"https://www.taiju-life.co.jp",group:"T&Dホールディングス",features:"国内系"},
+            {id:32,name:"T&Dフィナンシャル生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:60,plan:"Professional",url:"https://www.tdf-life.co.jp/",group:"T&Dホールディングス",features:"国内系"},
+            {id:33,name:"ニッセイ・ウェルス生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:65,plan:"Business",url:"https://www.nw-life.co.jp/",group:"日本生命グループ",features:"国内系"},
+            {id:34,name:"ネオファースト生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:62,plan:"Professional",url:"https://neofirst.co.jp/",group:"第一生命HD",features:"国内系"},
+            {id:35,name:"はなさく生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:60,plan:"Professional",url:"https://www.life8739.co.jp/",group:"日本生命グループ",features:"国内系"},
+            {id:36,name:"フコクしんらい生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:58,plan:"Professional",url:"https://www.fukokushinrai.co.jp/",group:"富国生命グループ",features:"国内系"},
+            {id:37,name:"PGF生命保険株式会社",type:"life",category:"foreign",tier:"tier2",score:65,plan:"Business",url:"https://www.pgf-life.co.jp/",group:"Prudential Financial",features:"外資系"},
+            {id:38,name:"三井住友海上プライマリー生命保険株式会社",type:"life",category:"domestic",tier:"tier2",score:68,plan:"Business",url:"https://www.ms-primary.com/",group:"MS&ADグループ",features:"国内系"},
+            {id:39,name:"みどり生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:50,plan:"Starter",url:"https://midori-life.com/",group:"独立系",features:"小規模"},
+            {id:40,name:"明治安田トラスト生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:62,plan:"Business",url:"https://www.meijiyasuda-trustlife.co.jp/",group:"明治安田グループ",features:"国内系"},
+            {id:41,name:"メディケア生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:60,plan:"Professional",url:"https://www.medicarelife.com/",group:"住友生命グループ",features:"国内系"},
+            {id:42,name:"なないろ生命保険株式会社",type:"life",category:"domestic",tier:"tier3",score:58,plan:"Professional",url:"https://www.nanairolife.co.jp/",group:"朝日生命グループ",features:"国内系"},
+
+            // 損害保険 - 大手4社
+            {id:43,name:"東京海上日動火災保険株式会社",type:"nonlife",category:"major",tier:"tier1",score:92,plan:"Enterprise",url:"https://www.tokiomarine-nichido.co.jp/",group:"東京海上HD",features:"業界最大手、海外65%、生成AI本格活用"},
+            {id:44,name:"損害保険ジャパン株式会社",type:"nonlife",category:"major",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sompo-japan.co.jp/",group:"SOMPOホールディングス",features:"CDaO体制、全社員AI展開、おしそんLLM"},
+            {id:45,name:"三井住友海上火災保険株式会社",type:"nonlife",category:"major",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.ms-ins.com/",group:"MS&ADグループ",features:"MS1 Brain、NEC協業、2027年合併予定"},
+            {id:46,name:"あいおいニッセイ同和損害保険株式会社",type:"nonlife",category:"major",tier:"tier2",score:82,plan:"Business Elite",url:"https://www.aioinissaydowa.co.jp/",group:"MS&ADグループ",features:"テレマティクスリーダー、生成AI専用保険"},
+
+            // 損害保険 - ダイレクト系
+            {id:47,name:"ソニー損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:90,plan:"Enterprise",url:"https://www.sonysonpo.co.jp/",group:"ソニーフィナンシャルG",features:"ダイレクト22年連続No.1、NPS1位"},
+            {id:48,name:"東京海上ダイレクト損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:85,plan:"Professional",url:"https://www.e-design.net/",group:"東京海上HD",features:"生成AI業務支援ツール開発"},
+            {id:49,name:"楽天損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:83,plan:"Professional",url:"https://www.rakuten-sonpo.co.jp/",group:"楽天グループ",features:"AIアバター業界初導入、新規+82%"},
+            {id:50,name:"SOMPOダイレクト損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:82,plan:"Professional",url:"https://www.sompo-direct.co.jp/",group:"SOMPOホールディングス",features:"Guidewire導入、業界2位"},
+            {id:51,name:"SBI損害保険株式会社",type:"nonlife",category:"direct",tier:"tier1",score:80,plan:"Professional",url:"https://www.sbisonpo.co.jp/",group:"SBIグループ",features:"Microsoft Copilot導入、高成長"},
+            {id:52,name:"三井ダイレクト損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:78,plan:"Standard",url:"https://www.mitsui-direct.co.jp/",group:"MS&ADグループ",features:"KARAKURI chatbot、HDI三つ星"},
+            {id:53,name:"アクサ損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:75,plan:"Standard",url:"https://www.axa-direct.co.jp/",group:"AXAグループ",features:"DX基盤完成済み、110万件"},
+            {id:54,name:"au損害保険株式会社",type:"nonlife",category:"direct",tier:"tier2",score:72,plan:"Standard",url:"https://www.au-sonpo.co.jp/",group:"auフィナンシャルHD",features:"DX認定事業者、KDDI連携"},
+
+            // 損害保険 - 宠物保险
+            {id:55,name:"アニコム損害保険株式会社",type:"nonlife",category:"pet",tier:"tier1",score:88,plan:"Business",url:"https://www.anicom-sompo.co.jp/",group:"アニコムHD",features:"ペット保険No.1、6,964医院連携"},
+            {id:56,name:"アイペット損害保険株式会社",type:"nonlife",category:"pet",tier:"tier1",score:82,plan:"Business",url:"https://www.ipet-ins.com/",group:"第一生命HD",features:"100万契約突破、第一生命系"},
+            {id:57,name:"ペット&ファミリー損害保険株式会社",type:"nonlife",category:"pet",tier:"tier2",score:75,plan:"Professional",url:"https://www.petfamilyins.co.jp/",group:"T&Dホールディングス",features:"日本最初のペット保険起源"},
+
+            // 損害保険 - 外資系
+            {id:58,name:"AIG損害保険株式会社",type:"nonlife",category:"foreign",tier:"tier1",score:85,plan:"Business Elite",url:"https://www.aig.co.jp/sonpo",group:"AIG Inc.",features:"全球化、12,760代理店、ISO22301"},
+
+            // 損害保険 - 旅行保险
+            {id:59,name:"ジェイアイ傷害火災保険株式会社",type:"nonlife",category:"travel",tier:"tier1",score:90,plan:"Business Elite",url:"https://www.jihoken.co.jp/",group:"JTB+AIG合弁",features:"海外36都市Jiデスク、多言語極高"},
+            {id:60,name:"エイチ・エス損害保険株式会社",type:"nonlife",category:"travel",tier:"tier2",score:78,plan:"Professional",url:"https://www.hs-sonpo.co.jp/",group:"HISグループ",features:"旅行保険専門、24時間ニーズ"},
+
+            // 損害保険 - 中堅
+            {id:61,name:"セコム損害保険株式会社",type:"nonlife",category:"regional",tier:"tier2",score:75,plan:"Professional",url:"https://www.secom-sonpo.co.jp/",group:"セコムグループ",features:"安保融合型保険、技術導向"},
+            {id:62,name:"共栄火災海上保険株式会社",type:"nonlife",category:"regional",tier:"tier2",score:72,plan:"Professional",url:"https://www.kyoeikasai.co.jp/",group:"JA共済連系",features:"農協関連、地域密着"},
+            {id:63,name:"日新火災海上保険株式会社",type:"nonlife",category:"regional",tier:"tier2",score:68,plan:"Business",url:"https://www.nisshinfire.co.jp/",group:"東京海上HD",features:"地域密着、独自成長路線"},
+            {id:64,name:"明治安田損害保険株式会社",type:"nonlife",category:"regional",tier:"tier2",score:70,plan:"Professional",url:"https://www.meijiyasuda-sonpo.co.jp/",group:"明治安田生命G",features:"生保系損保"},
+            {id:65,name:"大同火災海上保険株式会社",type:"nonlife",category:"regional",tier:"tier3",score:58,plan:"Starter",url:"https://www.daidokasai.co.jp/",group:"独立系",features:"沖縄唯一本土損保"},
+
+            // 損害保険 - 再保险
+            {id:66,name:"トーア再保険株式会社",type:"nonlife",category:"reinsurance",tier:"tier3",score:55,plan:"Professional",url:"https://www.toare.co.jp/",group:"独立系",features:"日本唯一専門再保険"},
+            {id:67,name:"日本地震再保険株式会社",type:"nonlife",category:"reinsurance",tier:"tier3",score:40,plan:"Starter",url:"https://nihonjishin.co.jp/",group:"特殊法人",features:"地震保険唯一再保険"},
+
+            // 損害保険 - 特殊領域
+            {id:68,name:"株式会社NTTドコモ損害保険",type:"nonlife",category:"specialty",tier:"tier2",score:72,plan:"Professional",url:"https://www.docomo-sompo.com/",group:"NTTグループ",features:"2024年新設、通信端末保険"},
+            {id:69,name:"さくら損害保険株式会社",type:"nonlife",category:"specialty",tier:"tier2",score:70,plan:"Professional",url:"https://www.sakura-ins.co.jp/",group:"光通信",features:"通信端末修理保険"},
+            {id:70,name:"キャピタル損害保険株式会社",type:"nonlife",category:"specialty",tier:"tier2",score:68,plan:"Professional",url:"https://www.capital-sonpo.co.jp/",group:"三菱HC+損保Japan",features:"所得補償専門"},
+            {id:71,name:"株式会社ヤマップネイチャランス損害保険",type:"nonlife",category:"specialty",tier:"tier2",score:75,plan:"Professional",url:"https://yamap-naturance.co.jp/",group:"YAMAP",features:"アウトドア保険、InsurTech"},
+            {id:72,name:"レスキュー損害保険株式会社",type:"nonlife",category:"specialty",tier:"tier2",score:72,plan:"Professional",url:"https://www.rescue-sonpo.jp/",group:"JBR+日本生命+セブン銀行",features:"生活密着型、24時間親和性"},
+        ];
+
+        // State
+        let filteredCompanies = [...companies];
+
+        // DOM Elements
+        const searchInput = document.getElementById('search');
+        const filterType = document.getElementById('filter-type');
+        const filterTier = document.getElementById('filter-tier');
+        const filterCategory = document.getElementById('filter-category');
+        const filterPlan = document.getElementById('filter-plan');
+        const sortBy = document.getElementById('sort-by');
+        const companyGrid = document.getElementById('company-grid');
+        const showingCount = document.getElementById('showing-count');
+        const tier1Count = document.getElementById('tier1-count');
+        const tier2Count = document.getElementById('tier2-count');
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Filtering
+        function applyFilters() {
+            const search = searchInput.value.toLowerCase();
+            const type = filterType.value;
+            const tier = filterTier.value;
+            const category = filterCategory.value;
+            const plan = filterPlan.value;
+            const sort = sortBy.value;
+
+            filteredCompanies = companies.filter(c => {
+                if (search && !c.name.toLowerCase().includes(search)) return false;
+                if (type && c.type !== type) return false;
+                if (tier && c.tier !== tier) return false;
+                if (category && c.category !== category) return false;
+                if (plan && c.plan !== plan) return false;
+                return true;
+            });
+
+            // Sorting
+            if (sort === 'score-desc') filteredCompanies.sort((a, b) => b.score - a.score);
+            else if (sort === 'score-asc') filteredCompanies.sort((a, b) => a.score - b.score);
+            else if (sort === 'name-asc') filteredCompanies.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+
+            renderCompanies();
+        }
+
+        // Render companies
+        function renderCompanies() {
+            companyGrid.innerHTML = filteredCompanies.map(c => `
+                <div class="company-card ${c.tier}" onclick="showModal(${c.id})">
+                    <div class="company-header">
+                        <div class="company-name">${c.name}</div>
+                        <div class="company-score">${c.score}点</div>
+                    </div>
+                    <div class="company-meta">${c.group}</div>
+                    <div class="company-tags">
+                        <span class="tag tag-${c.type}">${c.type === 'life' ? '生保' : '損保'}</span>
+                        <span class="tag tag-${c.tier}">${c.tier.replace('tier', 'Tier ')}</span>
+                        <span class="tag tag-plan">${c.plan}</span>
+                        <span class="tag tag-category">${getCategoryLabel(c.category)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            showingCount.textContent = filteredCompanies.length;
+        }
+
+        function getCategoryLabel(cat) {
+            const labels = {
+                major: '大手',
+                foreign: '外資系',
+                direct: 'ダイレクト',
+                mutual: '相互会社',
+                internet: 'ネット系',
+                domestic: '国内系',
+                pet: 'ペット',
+                travel: '旅行',
+                reinsurance: '再保険',
+                regional: '中堅・地域',
+                specialty: '特殊領域'
+            };
+            return labels[cat] || cat;
+        }
+
+        // Modal
+        function showModal(id) {
+            const c = companies.find(x => x.id === id);
+            if (!c) return;
+
+            document.getElementById('modal-title').textContent = c.name;
+            document.getElementById('modal-body').innerHTML = `
+                <table>
+                    <tr><th>会社名</th><td>${c.name}</td></tr>
+                    <tr><th>業種</th><td>${c.type === 'life' ? '生命保険' : '損害保険'}</td></tr>
+                    <tr><th>カテゴリ</th><td>${getCategoryLabel(c.category)}</td></tr>
+                    <tr><th>所属グループ</th><td>${c.group}</td></tr>
+                    <tr><th>GBase適合度</th><td><strong style="color:var(--primary);font-size:1.2rem;">${c.score}点</strong> / 100点</td></tr>
+                    <tr><th>優先度</th><td><span class="tag tag-${c.tier}">${c.tier.replace('tier', 'Tier ')}</span></td></tr>
+                    <tr><th>推奨プラン</th><td><span class="tag tag-plan">${c.plan}</span></td></tr>
+                    <tr><th>特徴・訴求ポイント</th><td>${c.features}</td></tr>
+                    <tr><th>公式サイト</th><td><a href="${c.url}" target="_blank" style="color:var(--primary);">${c.url}</a></td></tr>
+                </table>
+                <div style="margin-top:1.5rem;padding:1rem;background:var(--bg);border-radius:0.5rem;">
+                    <strong>アプローチ戦略</strong>
+                    <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--muted);">
+                        ${getApproachStrategy(c)}
+                    </p>
+                </div>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function getApproachStrategy(c) {
+            if (c.tier === 'tier1') {
+                return `最優先アプローチ対象。${c.plan}プランを提案し、経営層・CIOへのDX推進提案を軸に展開。多言語対応と24時間サービスを主要訴求ポイントに。`;
+            } else if (c.tier === 'tier2') {
+                return `重点フォロー対象。${c.plan}プランから開始し、パイロット導入で効果実証後に拡大展開を提案。`;
+            } else {
+                return `機会型アプローチ。タイミングを見てStarter/Professionalプランでの試験導入を提案。`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Initialize
+        function init() {
+            // Count tiers
+            tier1Count.textContent = companies.filter(c => c.tier === 'tier1').length;
+            tier2Count.textContent = companies.filter(c => c.tier === 'tier2').length;
+
+            // Event listeners
+            searchInput.addEventListener('input', applyFilters);
+            filterType.addEventListener('change', applyFilters);
+            filterTier.addEventListener('change', applyFilters);
+            filterCategory.addEventListener('change', applyFilters);
+            filterPlan.addEventListener('change', applyFilters);
+            sortBy.addEventListener('change', applyFilters);
+
+            // Close modal on overlay click
+            document.getElementById('modal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-overlay')) closeModal();
+            });
+
+            // Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+
+            renderCompanies();
+        }
+
+        init();
+    </script>
+</body>
+</html>
